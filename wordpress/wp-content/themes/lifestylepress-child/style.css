@@ -1,0 +1,59 @@
+/*!
+Theme Name: LifeStylePress Child
+Author: Julia Lenz
+Description: A theme for my wordpress final
+Version: 1.0.3
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+Text Domain: lifestylepress-child
+Template: lifestylepress
+*template is the parent theme folder
+*stylesheet refers to the child/current theme
+*/
+
+body {
+    background-color: #FCFCFC;
+    font-family: 'Playfair Display', serif;
+}
+body .swidgets-wrap h3 {
+    color: #B3191C;
+}
+ body .main-navigation a:hover, .main-navigation ul li.current_page_ancestor a,  .main-navigation ul li.current-menu-ancestor a, .main-navigation ul li.current_page_item a, .main-navigation ul li:hover > a  {
+    background-color: #B3191C;
+}
+header {
+    color: #3d405b;
+    font-family: Arvo, sans-serif;
+}
+body .wp-block-button__link {
+    background-color: #3d405b;
+    border-radius: 0px;
+}
+
+body .wp-block-button__link button:hover {
+    background-color: #F8B93A;
+    color: black;
+}
+body wpa-result-last-text atw-font-bold atw-text-red-700 atw-text-lg {
+    color: #B3191C;
+}
+a.url.fn.n {
+    display:none !important;
+}
+body .widget ul li a:hover{
+    color: #F8B93A;
+}
+
+body .blogpost-button .button:hover {
+    background-color: #B3191C;
+    color: #FCFCFC;
+}
+body .archive-description{
+    display:none; !important;
+}
+body .wpcf7-form-control .has-spinner .wpcf7-submit {
+    color: #B3191C;
+}
+ body  h3 .border-bottom .py-2 {
+     color: #B3191C;
+ }

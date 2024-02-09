@@ -13,7 +13,7 @@ services:
       # MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
       # named volumes:
-      - db-wp-author-site:/var/lib/mysql
+      - db-wp-author-final:/var/lib/mysql
       # local volumes
       #- ./db/data:/var/lib/mysql
       - ./conf/mysql:/etc/mysql/conf.d
@@ -22,7 +22,7 @@ services:
   wordpress:
     image: wordpress:${WORDPRESS_VERSION}-php${PHP_VERSION}-apache
     ports:
-      - 80:80
+      - 8080:80
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: ${DB_USER}
@@ -41,17 +41,11 @@ services:
     image: phpmyadmin:latest
     restart: always
     ports:
-      - 8081:80
+      - 8083:80
     environment:
       - PMA_HOST=db
       - PMA_USER=${DB_USER}
       - PMA_PASSWORD=${DB_PASSWORD}
-
-  mailhog:
-    image: mailhog/mailhog:latest
-    ports:
-      - 1025:1025 # smtp server
-      - 8025:8025 # web ui
 
   wpcli:
     depends_on:
@@ -64,9 +58,10 @@ services:
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_TABLE_PREFIX: ${WP_TABLE_PREFIX}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
       WORDPRESS_DB_NAME: ${DB_NAME}
 
 # named volumes:
 volumes:
-   db-wp-author-site:
+   db-wp-author-final:
