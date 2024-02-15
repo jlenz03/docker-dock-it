@@ -22,6 +22,7 @@ wp plugin delete hello akismet ;
 wp plugin install health-check query-monitor essential-blocks contact-form-7 loco-translate blockart-blocks everest-forms --activate ;  
 wp plugin activate final-books ;
 wp theme activate lifestylepress-child ;
+wp theme install lifestylepress ;
 wp theme delete twentytwenty twentytwentyone ;"
 ```
 
