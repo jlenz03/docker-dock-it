@@ -21,6 +21,6 @@
 /wordpress/wp-content/themes/*
 
 # … except our stuff.
-!/wordpress/wp-content/plugins/final-books/final-books.php
+!/wordpress/wp-content/plugins/final-books/
 !/wordpress/wp-content/themes/lifestylepress-child
 
