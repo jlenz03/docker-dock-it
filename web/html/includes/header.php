@@ -16,9 +16,11 @@
 </head>
 
 <header>
-    <a class="navbar-brand" href="#">
-        <img  class="logo" src="images/reellogo.png" alt="reel logo"  >
-    </a>
+    <div class="logo">
+        <a class="navbar-brand rounded-circle d-flex justify-content-center align-items-center bg-white" href="#">
+            <img src="images/reel-review-logo.png" alt="reel logo" class="img-fluid">
+        </a>
+    </div>
 
 <ul class="nav justify-content-end">
   <li class="nav-item">

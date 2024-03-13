@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
     ports:
-      - 80:80
+      - '80:80'
     volumes:
       # without volumes, data would be reset everytime
       - ./conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini

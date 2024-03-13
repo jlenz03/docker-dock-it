@@ -17,15 +17,22 @@ require_once "includes/database.php";
     <div class="col-4">
         <h1>Home </h1>
         <h2> Welcome to Reel Reviews!</h2>
-        <p> Click Below To Check Out Our Recent Reviews on New and Upcoming Movies!</p>
-       <a href="movies.php"> <button type="button" class="btn btn-primary btn-lg" >Browse Movies</button></a>
 
-    </div>
-    <div class="col-4">
-        <img  class="banner" src="images/theatre.jpg" alt="theatre seats">
-    </div>
+        <div class="container mt-5">
+            <div class="card" style="width: 18rem;">
+                <img src="images/hp.jpeg" class="card-img" alt="...">
+                <div class="card-img-overlay d-flex flex-column justify-content-end">
+                    <h5 class="card-title">Card Title</h5>
+                    <p class="card-text">Some quick example text to show more content when hovered over the card image.</p>
+                    <a href="movies.php"> <button type="button" class="btn btn-primary btn-lg" >Browse Movies</button></a>
+
+                </div>
+            </div>
+        </div>
+
+
 </div>
-
+</div>
 </body>
 <?php
 require_once "includes/footer.php"; ?>
