@@ -16,10 +16,11 @@
 </head>
 
 <header>
-    <div class="logo">
+    <div class="logo  d-flex justify-content-start ">
         <a class="navbar-brand rounded-circle d-flex justify-content-center align-items-center bg-white" href="#">
             <img src="images/reel-review-logo.png" alt="reel logo" class="img-fluid">
         </a>
+        <h1>Reel Reviews</h1>
     </div>
 
 <ul class="nav justify-content-end">
@@ -29,6 +30,7 @@
   <li class="nav-item">
     <a class="nav-link" href="movies.php">Movies</a>
   </li>
+
 
 
 </ul>

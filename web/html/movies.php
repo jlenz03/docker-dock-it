@@ -6,12 +6,11 @@ require_once "includes/database.php";
 
 ?>
 <body>
-<div class="row justify-content-start">
+
+<div class="row d-flex justify-content-center">
+
     <div class="col-4">
         <h1>Movie Database</h1>
-    </div>
-    <div class="col-4">
-        <img  class="banner" src="images/lovereview.jpg" alt="guy loving the movie">
     </div>
 </div>
 
@@ -32,45 +31,29 @@ $query= "SELECT final_movie.MovieTitle AS MovieTitle, final_movie.MovieId
 //in development
 $result = @mysqli_query($db, $query) or die('Error in query'.mysqli_error($db));
 ?>
-<table class="table table-striped table-hover">
-    <thead>
-    <tr>
-        <th><a href="?sort=MovieTitle"> MovieTitle</a></th>
-        <th> Reviews</a></th>
-
-    </tr>
-    </thead>
-    <tbody>
-    <?php
-    //loop through results
-    //EACH  time mysqli_fetch_array is called, it retrieves the next record
-    while($row= mysqli_fetch_array($result,MYSQLI_ASSOC)){
-        //$row represents a record in database
-        //echo $row['Name'] . '<br>';
-        ?>
-        <tr>
-            <!-- <a href="customer.php?Customer=$row['AlbumTitle'] "> </a>-->
-            <td> <?=$row['MovieTitle'] ?> </td>
-            <br>
-            <td>
-                <a href="reviews.php?MovieId=<?= $row['MovieId']?> " class='btn btn-sm btn-secondary'>Reviews</a>
-            </td>
-
-        </tr>
+<div class="container mt-3">
+    <div class="row justify-content-center">
         <?php
-    }
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            ?>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/stone.jpg" class="card-img" alt="...">
+                    <div class="card-img-overlay d-flex flex-column justify-content-end">
+                        <h5 class="card-title"><?= $row['MovieTitle'] ?></h5>
+                        <p class="card-text">Some quick example text to show more content when hovered over the card image.</p>
+                        <a href="movie-details.php?MovieId=<?= $row['MovieId'] ?>" class="btn btn-primary btn-lg">Details</a>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        mysqli_close($db);
+        ?>
+    </div>
+</div>
 
-    //close database connection
-    //usually done in footer of page
-    mysqli_close($db);
-    ?>
 
-
-
-
-
-
-</table>
 <?php
 require_once "includes/footer.php";
 ?>

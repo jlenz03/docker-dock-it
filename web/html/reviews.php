@@ -27,62 +27,91 @@ $query= "SELECT final_movie.MovieTitle AS Movie, final_review.ReviewId,  final_r
 //in development
 $result = @mysqli_query($db, $query) or die('Error in query'.mysqli_error($db));
 ?>
-<table class="table table-striped table-hover">
-    <thead>
-    <tr>
-        <th> <a href="?sort=MovieTitle"> Movie Title</a></th>
-        <th> <a href="?sort=Rating">Rating</a></th>
-        <th> <a href="?sort=ReviewTitle">Title</a></th>
-        <th> <a href="?sort=Review">Review</a></th>
-        <th> <a href="?sort=FirstName">First Name</a></th>
-        <th><a href="?sort=LastName"> Last Name</a></th>
+<?php
+//loop through results
+//EACH  time mysqli_fetch_array is called, it retrieves the next record
+while($row= mysqli_fetch_array($result,MYSQLI_ASSOC)){
+//$row represents a record in database
+//echo $row['Name'] . '<br>';
+?>
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8 mb-4">
+            <div class="movie-details">
+                <div class="review-image">
+                    <!--                 <img src="images/--><?//= $row['MovieImage'] ?><!--" class="img-fluid" alt="--><?//= $row['MovieTitle'] ?><!--">-->
+                    <img src="images/stone.jpg" class="img-fluid" alt="<?= $row['Movie'] ?>">
+                </div>
+                <div class="movie-info">
+                    <h2><?=$row['Title'] ?></h2>
 
-    </tr>
-    </thead>
-    <tbody>
-    <?php
-    //loop through results
-    //EACH  time mysqli_fetch_array is called, it retrieves the next record
-    while($row= mysqli_fetch_array($result,MYSQLI_ASSOC)){
-    //$row represents a record in database
-    //echo $row['Name'] . '<br>';
-    ?>
-    <tr>
+                    <p>
+                        <?=$row['FirstName'] ?>
+                        <?=$row['LastName'] ?>
+                        <?=$row['Rating'] ?>
+                    </p>
+                    <p><?=$row['Movie'] ?></p>
+                    <p><?=$row['Review'] ?></p>
+                    <!-- You can display more details as needed -->
 
-
-        <td><?=$row['Movie'] ?> </td>
-        <td><?=$row['Rating'] ?> </td>
-        <td><?=$row['Title'] ?> </td>
-        <td><?=$row['Review'] ?> </td>
-        <td><?=$row['FirstName'] ?> </td>
-        <td><?=$row['LastName'] ?> </td>
-        <td>
-            <a href="edit-review.php?id=<?= $row['ReviewId']?> " class='btn btn-sm btn-secondary'>Edit</a>
-        </td>
-        <td>
-            <a href="add-review.php?id=<?= $row['ReviewId']?> " class='btn btn-sm btn-secondary'>Add</a>
-        </td>
-        <td>
-            <a href="delete-review.php?id=<?= $row['ReviewId']?> " class='btn btn-sm btn-secondary'>Delete</a>
-        </td>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-    </tr>
-    </tbody>
-    <?php
+
+<!--<table class="table table-striped table-hover">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th> <a href="?sort=MovieTitle"> Movie Title</a></th>-->
+<!--        <th> <a href="?sort=Rating">Rating</a></th>-->
+<!--        <th> <a href="?sort=ReviewTitle">Title</a></th>-->
+<!--        <th> <a href="?sort=Review">Review</a></th>-->
+<!--        <th> <a href="?sort=FirstName">First Name</a></th>-->
+<!--        <th><a href="?sort=LastName"> Last Name</a></th>-->
+<!---->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!---->
+<!--    <tr>-->
+<!---->
+<!---->
+<!--        <td>--><?//=$row['Movie'] ?><!-- </td>-->
+<!--        <td>--><?//=$row['Rating'] ?><!-- </td>-->
+<!--        <td>--><?//=$row['Title'] ?><!-- </td>-->
+<!--        <td>--><?//=$row['Review'] ?><!-- </td>-->
+<!--        <td>--><?//=$row['FirstName'] ?><!-- </td>-->
+<!--        <td>--><?//=$row['LastName'] ?><!-- </td>-->
+<!--        <td>-->
+<!--            <a href="edit-review.php?id=--><?//= $row['ReviewId']?><!-- " class='btn btn-sm btn-secondary'>Edit</a>-->
+<!--        </td>-->
+<!--        <td>-->
+<!--            <a href="add-review.php?id=--><?//= $row['ReviewId']?><!-- " class='btn btn-sm btn-secondary'>Add</a>-->
+<!--        </td>-->
+<!--        <td>-->
+<!--            <a href="delete-review.php?id=--><?//= $row['ReviewId']?><!-- " class='btn btn-sm btn-secondary'>Delete</a>-->
+<!--        </td>-->
+<!---->
+<!---->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--    --><?php
     }
-
-    //close database connection
-    //usually done in footer of page
-    mysqli_close($db);
-    ?>
-
-
-
-
-
-
-</table>
+//
+//    //close database connection
+//    //usually done in footer of page
+//    mysqli_close($db);
+//    ?>
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!--</table>-->
 <?php
 require_once "includes/footer.php";
 ?>

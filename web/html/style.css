@@ -21,15 +21,28 @@ header {
     background-color: #81AEC0;
     color: black;
     margin-left: 7%;
+    border: 2px solid #81AEC0; /* Add border for a distinct button outline */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.btn-primary:hover {
+    background-color: #5c859e; /* Change background color on hover */
+    color: white; /* Change text color on hover */
+    border-color: #5c859e; /* Change border color on hover */
+}
+
+.btn-primary:focus, .btn-primary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(129, 174, 192, 0.5); /* Focus style */
+}
+
+.btn-primary:active, .btn-primary.active {
+    background-color: #3f6375; /* Change background color when button is active */
+    border-color: #3f6375; /* Change border color when button is active */
+    color: white; /* Change text color when button is active */
 }
 .nav a:hover {
     background-color: #F1F7ED;
     color:black;
-}
-.banner {
-    width: 100%;
-    height: 100%;
-    padding: 7%;
 }
 a {
     color:#81AEC0;
@@ -42,18 +55,27 @@ a:hover {
 .footer{
 
     background-color: #81AEC0;
+    width: 100%;
 }
 
 .logo{
-    max-width: 200px;
+    max-width: 300px;
     height: auto;
-    padding: 5%;
-
     padding: 1%;
 }
 .card {
     position: relative;
     overflow: hidden;
+    width: 250px;
+    height: auto;
+    max-height: 300px;
+    margin:0;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 .card .card-img-overlay {
@@ -61,6 +83,7 @@ a:hover {
     bottom: 0;
     left: 0;
     right: 0;
+    padding: 10px; /* Add padding for better readability */
     background: rgba(0, 0, 0, 0.5);
     color: #fff;
     opacity: 0;
@@ -70,6 +93,34 @@ a:hover {
 .card:hover .card-img-overlay {
     opacity: 1;
 }
+
+.card-title {
+    /*margin-bottom: 0; !* Remove default margin *!*/
+}
+
+.card-text {
+    font-size: 14px; /* Adjust font size as needed */
+    line-height: 1.5; /* Adjust line height for better spacing */
+}
+
+.movie-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.movie-details .movie-image {
+    max-width: 300px;
+    margin-right: 20px;
+}
+.movie-details .movie-info {
+    flex: 1;
+}
+.movie-details .review-image {
+    max-width: 100px;
+    margin-right: 20px;
+}
+
 
 
 table {

@@ -13,27 +13,54 @@ require_once "includes/database.php";
     <title>Document</title>
 </head>
 <body>
-<div class="row justify-content-start">
+
+<div class="row d-flex justify-content-center">
+
     <div class="col-4">
-        <h1>Home </h1>
-        <h2> Welcome to Reel Reviews!</h2>
+        <h1>Welcome to Reel Reviews</h1>
+        <h3> the one and stop shop for all your favorite movies!</h3>
+    </div>
+</div>
 
-        <div class="container mt-5">
-            <div class="card" style="width: 18rem;">
-                <img src="images/hp.jpeg" class="card-img" alt="...">
-                <div class="card-img-overlay d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Card Title</h5>
-                    <p class="card-text">Some quick example text to show more content when hovered over the card image.</p>
-                    <a href="movies.php"> <button type="button" class="btn btn-primary btn-lg" >Browse Movies</button></a>
 
+</body>
+</html>
+<?php
+// query to rn on the database
+//use  title artist and price as ur 3 columns
+$sort= $_GET['sort'] ?? 'MovieTitle';
+
+$query= "SELECT final_movie.MovieTitle AS MovieTitle, final_movie.MovieId
+        FROM final_movie
+        ORDER BY $sort";
+
+// run the query
+//$result = @mysqli_query($db, $query) or die('Error in query');
+//in development
+$result = @mysqli_query($db, $query) or die('Error in query'.mysqli_error($db));
+?>
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <?php
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            ?>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/stone.jpg" class="card-img" alt="...">
+                    <div class="card-img-overlay d-flex flex-column justify-content-end">
+                        <h5 class="card-title"><?= $row['MovieTitle'] ?></h5>
+                        <p class="card-text">Some quick example text to show more content when hovered over the card image.</p>
+                        <a href="movie-details.php?MovieId=<?= $row['MovieId'] ?>" class="btn btn-primary btn-lg">Details</a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-
+            <?php
+        }
+        mysqli_close($db);
+        ?>
+    </div>
 </div>
-</div>
-</body>
+
 <?php
 require_once "includes/footer.php"; ?>
 </html>
