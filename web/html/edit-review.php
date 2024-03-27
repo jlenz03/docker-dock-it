@@ -1,101 +1,113 @@
 <?php
-require_once "includes/header.php";
 require_once "includes/database.php";
 
-// get country code from url
-$id = $_GET['id'] ?? '1';
+
+
+// get review id from URL
+$reviewId = $_GET['id'] ?? '';
 
 // build query
-$query = "SELECT final_review.*, final_movie.MovieTitle AS MovieTitle
-                FROM final_review 
-                JOIN final_movie ON final_review.MovieId = final_movie.MovieId
-                WHERE final_movie.MovieId = '$id'";
+$query = "SELECT final_review.*, final_movie.MovieTitle AS MovieTitle, final_movie.MovieId AS MovieId
+          FROM final_review 
+          JOIN final_movie ON final_review.MovieId = final_movie.MovieId
+          WHERE final_review.ReviewId = '$reviewId'";
 
 // execute query
 $result = mysqli_query($db, $query) or die('Error loading review.');
 
-// get one record from the database
-$movieTitle = mysqli_fetch_array($result, MYSQLI_ASSOC);
-?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit <?= $movieTitle['MovieTitle'] ?></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-</head>
-<body>
-<h1>Edit Review</h1>
+// get review details from the database
+if ($result && mysqli_num_rows($result) > 0) {
+    $review = mysqli_fetch_assoc($result);
+    $movieId = $review['MovieId'];
+} else {
+    $error = "Review not found.";
+}
 
 
-<?php
+
 // if form was submitted
 if(isset($_POST['update'])) {
     // get values from form
-    $reviewId = $_POST['ReviewId'] ?? '';
-    $title = $_POST['ReviewTitle'] ?? '';
-    $review = $_POST['Review'] ?? '';
-    $rating = $_POST['Rating'] ?? '';
-    $movieId = $_POST['MovieId'] ?? '';
+    $reviewId = $_POST['reviewId'] ?? '';
+    $title = $_POST['title'] ?? '';
+    $reviewContent = $_POST['review'] ?? '';
+    $rating = $_POST['rating'] ?? '';
+    $movieId = $_POST['movieId'] ?? '';
 
     // TODO: validate inputs
 
-    // query to add record
-    $query = "UPDATE `final_review` SET 
-                       `Title` = '$title', 
-                       `Review` = '$review', 
-                       `Rating` = '$rating' 
-                WHERE `final_review`.`MovieId` = $movieId;";
+    // escape values to prevent SQL injection
+    $title = mysqli_real_escape_string($db, $title);
+    $reviewContent = mysqli_real_escape_string($db, $reviewContent);
+    $rating = mysqli_real_escape_string($db, $rating);
+
+    // query to update record
+    $updateQuery = "UPDATE `final_review` SET 
+                    `ReviewTitle` = '$title', 
+                    `Review` = '$reviewContent', 
+                    `Rating` = '$rating' 
+                    WHERE `ReviewId` = '$reviewId'";
 
     // execute query
-    $result = mysqli_query($db, $query) or die("Error updating review.");
+    $updateResult = mysqli_query($db, $updateQuery);
 
     // check if record was edited
-    //if(mysqli_affected_rows($db)){
-    // redirect
-    header('Location: reviews.php?id=' . $movieId);
-    //}
+    if($updateResult) {
+        // redirect to the movie details page with MovieId
+        if (!empty($movieId)) {
+            header('Location: movie-details.php?MovieId=' . $review['MovieId']);
+            exit;
+        } else {
+            $error = "MovieId is empty.";
+        }
+    } else {
+        $error = "Failed to update review.";
+    }
 }
 
-// close database connection (put in footer to avoid doing multiple times)
 mysqli_close($db);
+require_once "includes/header.php";
 ?>
+<a href="movie-details.php?MovieId=<?= $movieId ?>" class="btn btn-outline-light">
+    <i class="fas fa-arrow-left"></i> Back
+</a>
+<div class="row">
+    <div class="col-md-6 mx-auto">
+    <h1 class="mb-4">Edit Review</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="title">Review Title:</label>
+            <input type="text" class="form-control" id="title" name="title" value="<?= $review['ReviewTitle'] ?? '' ?>">
+        </div>
+        <div class="form-group">
+            <label for="review">Review:</label>
+            <textarea class="form-control" id="review" name="review" rows="5"><?= $review['Review'] ?? '' ?></textarea>
+        </div>
+        <div class="form-group">
+            <label for="movie">Movie:</label>
+            <input type="text" class="form-control" id="movie" value="<?= $review['MovieTitle'] ?? '' ?>" disabled>
+        </div>
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            <select class="form-control" id="rating" name="rating">
+                <option value="1" <?= $review['Rating'] == 1 ? 'selected' : '' ?>>⭐️</option>
+                <option value="2" <?= $review['Rating'] == 2 ? 'selected' : '' ?>>⭐⭐️</option>
+                <option value="3" <?= $review['Rating'] == 3 ? 'selected' : '' ?>>⭐⭐⭐️</option>
+                <option value="4" <?= $review['Rating'] == 4 ? 'selected' : '' ?>>⭐⭐⭐⭐️</option>
+                <option value="5" <?= $review['Rating'] == 5 ? 'selected' : '' ?>>⭐⭐⭐⭐⭐️</option>
+            </select>
+        </div>
+        <input type="hidden" name="reviewId" value="<?= $reviewId ?>">
+        <input type="hidden" name="movieId" value="<?= $review['MovieId'] ?? '' ?>">
+        <button type="submit" name="update" class="btn btn-secondary">Update Review</button>
+    </form>
+</div>
+</div>
 
-<form method="post">
-    <p>
-        <label for="name">Review Title: </label>
-        <input type="text" id="title" name="title" value="<?= $movieTitle['ReviewTitle'] ?>">
-    </p>
-    <p>
-        <label for="review">Review: </label>
-        <input type="text" id="review" name="review" value="<?= $movieTitle['Review'] ?>">
-    </p>
-    <p>
-        <label for="id">Movie: </label>
-        <input type="hidden" name="reviewId" value="<?= $movieTitle['ReviewId'] ?>">
-        <input type="text" id="title" value="<?= $movieTitle['MovieTitle'] ?>"disabled>
-    </p>
+<?php require_once "includes/footer.php"; ?>
 
-    <p>
-        <label for="rating">Rating: </label>
-        <select id="rating" name="rating">
-            <option value="1" <?= $movieTitle['Rating'] == 1 ? 'selected' : '' ?>>⭐️</option>
-            <option value="2" <?= $movieTitle['Rating'] == 2 ? 'selected' : '' ?>>&starf;&starf;️</option>
-            <option value="3" <?= $movieTitle['Rating'] == 3 ? 'selected' : '' ?>>⭐⭐⭐️</option>
-            <option value="4" <?= $movieTitle['Rating'] == 4 ? 'selected' : '' ?>>⭐⭐⭐⭐️</option>
-            <option value="5" <?= $movieTitle['Rating'] == 5 ? 'selected' : '' ?>>⭐⭐⭐⭐⭐️</option>
-        </select>
-    </p>
-    <p>
-        <input type="hidden" name="movieId" value="<?= $movieTitle['MovieId'] ?>">
-        <button type="submit" name="update" class="btn btn-primary">Update Review</button>
-    </p>
-</form>
 
-</body>
-</html>
+
+
+
 

@@ -1,71 +1,64 @@
 <?php
+
 require_once "includes/database.php";
 
-// get country code from url
-$id = $_GET['id'] ?? '1';
+// get review id from URL
+$reviewId = $_GET['id'] ?? '';
 
 // build query
 $query = "SELECT final_review.*, final_movie.MovieTitle AS MovieTitle
                 FROM final_review 
                 JOIN final_movie ON final_review.MovieId = final_movie.MovieId
-                WHERE final_movie.MovieId = '$id'";
+                WHERE final_review.ReviewId = '$reviewId'";
 
 // execute query
-$result = mysqli_query($db, $query) or die('Error loading city.');
+$result = mysqli_query($db, $query) or die('Error loading review.');
 
-// get one record from the database
-$title = mysqli_fetch_array($result, MYSQLI_ASSOC);
-?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Delete <?= $title['ReviewTitle'] ?></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-</head>
-<body>
-<h1>Delete Review</h1>
+// get review details from the database
+$review = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-
-<?php
-// if form was submitted
+// Check if the form is submitted for deletion
 if(isset($_POST['delete'])) {
-    // get values from form
-    $reviewId = $_POST['ReviewId'] ?? '';
+    // get review id to delete
+    $reviewId = $_POST['reviewId'] ?? '';
 
-    // TODO: validate inputs
-
-    // query to add record
-    $query = "DELETE FROM `final_review` 
+    // query to delete review
+    $deleteQuery = "DELETE FROM `final_review` 
                 WHERE `final_review`.`ReviewId` = $reviewId
                 LIMIT 1;";
 
-    // execute query
-    $result = mysqli_query($db, $query) or die("Error deleting review.");
+    // execute deletion query
+    $deleteResult = mysqli_query($db, $deleteQuery) or die("Error deleting review.");
 
-    // check if record was edited
-    //if(mysqli_affected_rows($db)){
-    // redirect
-    header('Location: reviews.php?id=' . $title['ReviewId']);
-    //}
+    // check if review was deleted
+    if($deleteResult) {
+        // redirect to reviews page for the movie
+        header('Location: movie-details.php?MovieId=' . $review['MovieId']);
+        exit; // stop further execution
+    } else {
+        echo "Failed to delete review.";
+    }
 }
 
-// close database connection (put in footer to avoid doing multiple times)
+// close database connection
 mysqli_close($db);
+require_once "includes/header.php";
 ?>
 
-<form method="post">
-    <p>Are you sure you want to delete "<?= $title['ReviewTitle'] ?>" from <?= $title['MovieTitle'] ?>?</p>
-    <p>
-        <input type="hidden" name="cityPlaceId" value="<?= $title['ReviewId'] ?>">
-        <button type="submit" name="delete" class="btn btn-danger">Delete Place</button>
-    </p>
-</form>
+<a href="movie-details.php?MovieId=<?= $review['MovieId'] ?>" class="btn btn-outline-light">
+    <i class="fas fa-arrow-left"></i> Back
+</a>
+<div class=" mt-5 d-flex align-items-center justify-content-center">
+    <div class="col text-center">
+        <h1 class="mb-4">Delete Review</h1>
+        <p>Are you sure you want to delete the review "<strong><?= $review['ReviewTitle'] ?></strong>" for the movie "<strong><?= $review['MovieTitle'] ?></strong>"?</p>
+        <form method="post">
+            <input type="hidden" name="reviewId" value="<?= $review['ReviewId'] ?>">
+            <button type="submit" name="delete" class="btn btn-danger mt-3">Delete Review</button>
+        </form>
+    </div>
+</div>
 
-</body>
-</html>
+<?php require_once "includes/footer.php";
+?>
 

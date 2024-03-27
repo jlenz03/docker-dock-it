@@ -1,75 +1,108 @@
+/* General Styles */
 body {
-
     font-family: 'Raleway', sans-serif;
     background-color: #707070;
     color: white;
-    display: block;
     margin: 0;
-
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+
 header {
     background-color: #81AEC0;
 }
-.nav-link {
-    color:#FFFFFF;
-    font-size: 1.5em;
 
+h1 {
+    margin-top: 3%;
+    text-align: center;
 }
 
+.nav-link {
+    color: #FFFFFF;
+    font-size: 1.5em;
+}
 
-.btn-primary {
+form {
+    padding: 2%;
+}
+
+label {
+    padding-top: 3%;
+    font-size: large;
+}
+
+.form-control {
+    padding: 2%;
+}
+
+/* Button Styles */
+.btn-primary,
+.btn-secondary,
+.btn-danger {
     background-color: #81AEC0;
     color: black;
-    margin-left: 7%;
-    border: 2px solid #81AEC0; /* Add border for a distinct button outline */
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transition for hover effect */
+    margin: 5px;
+    border: 2px solid #81AEC0;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-secondary {
+    margin: auto;
 }
 
 .btn-primary:hover {
-    background-color: #5c859e; /* Change background color on hover */
-    color: white; /* Change text color on hover */
-    border-color: #5c859e; /* Change border color on hover */
+    background-color: #5c859e;
+    color: white;
+    border-color: #5c859e;
 }
 
-.btn-primary:focus, .btn-primary.focus {
-    box-shadow: 0 0 0 0.2rem rgba(129, 174, 192, 0.5); /* Focus style */
+.btn-primary:focus,
+.btn-primary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(129, 174, 192, 0.5);
 }
 
-.btn-primary:active, .btn-primary.active {
-    background-color: #3f6375; /* Change background color when button is active */
-    border-color: #3f6375; /* Change border color when button is active */
-    color: white; /* Change text color when button is active */
+.btn-primary:active,
+.btn-primary.active {
+    background-color: #3f6375;
+    border-color: #3f6375;
+    color: white;
 }
-.nav a:hover {
-    background-color: #F1F7ED;
-    color:black;
-}
+
+/* Link Styles */
+.nav a,
 a {
-    color:#81AEC0;
+    color: #ffff;
+    margin: 1%;
 }
+
+.nav a:hover,
 a:hover {
-    color: #FFFFFF;
-
+    color: #81AEC0;
 }
 
-.footer{
-
+/* Footer Styles */
+.footer {
     background-color: #81AEC0;
     width: 100%;
+    margin-top: auto;
 }
 
-.logo{
-    max-width: 300px;
+/* Logo Styles */
+.logo {
+    max-width: 350px;
     height: auto;
     padding: 1%;
 }
+
+/* Card Styles */
 .card {
     position: relative;
     overflow: hidden;
     width: 250px;
     height: auto;
-    max-height: 300px;
-    margin:0;
+    max-height: 350px;
+    margin: 0;
 }
 
 .card img {
@@ -83,7 +116,7 @@ a:hover {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 10px; /* Add padding for better readability */
+    padding: 10px;
     background: rgba(0, 0, 0, 0.5);
     color: #fff;
     opacity: 0;
@@ -95,27 +128,31 @@ a:hover {
 }
 
 .card-title {
-    /*margin-bottom: 0; !* Remove default margin *!*/
+    /*margin-bottom: 0;*/
 }
 
 .card-text {
-    font-size: 14px; /* Adjust font size as needed */
-    line-height: 1.5; /* Adjust line height for better spacing */
+    font-size: 14px;
+    line-height: 1.5;
 }
 
+/* Movie Details Styles */
 .movie-details {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
 }
+
 .movie-details .movie-image {
     max-width: 300px;
     margin-right: 20px;
 }
+
 .movie-details .movie-info {
     flex: 1;
 }
+
 .movie-details .review-image {
     max-width: 100px;
     margin-right: 20px;
@@ -123,9 +160,8 @@ a:hover {
 
 
 
-table {
-    background-color: #91C7B1;
-}
+
+
 
 
 

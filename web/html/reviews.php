@@ -86,13 +86,13 @@ while($row= mysqli_fetch_array($result,MYSQLI_ASSOC)){
 <!--        <td>--><?//=$row['FirstName'] ?><!-- </td>-->
 <!--        <td>--><?//=$row['LastName'] ?><!-- </td>-->
 <!--        <td>-->
-<!--            <a href="edit-review.php?id=--><?//= $row['ReviewId']?><!-- " class='btn btn-sm btn-secondary'>Edit</a>-->
+            <a href="edit-review.php?id=<?= $row['ReviewId']?> " class='btn btn-sm btn-secondary'>Edit</a>
 <!--        </td>-->
 <!--        <td>-->
-<!--            <a href="add-review.php?id=--><?//= $row['ReviewId']?><!-- " class='btn btn-sm btn-secondary'>Add</a>-->
+            <a href="add-review.php?id=<?= $row['ReviewId']?> " class='btn btn-sm btn-secondary'>Add</a>
 <!--        </td>-->
 <!--        <td>-->
-<!--            <a href="delete-review.php?id=--><?//= $row['ReviewId']?><!-- " class='btn btn-sm btn-secondary'>Delete</a>-->
+            <a href="delete-review.php?id=<?= $row['ReviewId']?> " class='btn btn-sm btn-secondary'>Delete</a>
 <!--        </td>-->
 <!---->
 <!---->

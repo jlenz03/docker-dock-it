@@ -1,117 +1,94 @@
 <?php
 require_once "includes/database.php";
-require_once "includes/header.php";
 
-// get country code from url
-$id = $_GET['id'] ?? '1';
+// get movie id from url
+$movieId = $_GET['id'] ?? '1';
 
-// build query
-$query = "SELECT * FROM final_review WHERE ID = '$id'";
+// Fetch movie details
+$query = "SELECT * FROM final_movie WHERE MovieId = '$movieId'";
+$result = mysqli_query($db, $query) or die('Error loading movie.');
 
-// execute query
-$result = mysqli_query($db, $query) or die('Error loading review.');
+$movie = mysqli_fetch_assoc($result);
 
-// get one record from the database
-$addReview = mysqli_fetch_array($result, MYSQLI_ASSOC);
-?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?= $addReview['MovieId'] ?></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-</head>
-<body>
-<h1>Add Movie Review</h1>
-
-
-<?php
 // if form was submitted
 if(isset($_POST['add'])) {
     // get values from form
-    $reviewId = $_POST['ReviewId'] ?? '';
-    $movieId = $_POST['MovieId'] ?? '';
-    $reviewTitle = $_POST['ReviewTitle'] ?? '';
+    $reviewTitle = $_POST['title'] ?? '';
     $review = $_POST['review'] ?? '';
     $rating = $_POST['rating'] ?? '';
-    $firstName = $_POST['FirstName'] ?? '';
-    $lastName = $_POST['LastName'] ?? '';
+    $firstName = $_POST['first'] ?? '';
+    $lastName = $_POST['last'] ?? '';
 
     // TODO: validate inputs
 
     // query to add record
-    $query = "INSERT INTO `final_review` 
-        (`ReviewId`, `MovieId`, `ReviewTitle`, `Review`, `Rating`, `FirstName`, `LastName`) 
-    VALUES 
-        (NULL, '?', '?', '?', '?', '?');";
-
-
-    $stmt= mysqli_prepare($db, $query) or die ('Invalid query');
-
-    mysqli_stmt_bind_param($stmt,'issi', $reviewId, $movieId, $reviewTitle,$review, $rating , $firstName, $lastName);
-
-    mysqli_stmt_execute($stmt);
+    $insertQuery = "INSERT INTO `final_review` 
+                    (`MovieId`, `ReviewTitle`, `Review`, `Rating`, `FirstName`, `LastName`) 
+                    VALUES 
+                    ('$movieId', '$reviewTitle', '$review', '$rating', '$firstName', '$lastName')";
 
     // execute query
-    $result = mysqli_query($db, $query) or die("Error adding review.");
+    $result = mysqli_query($db, $insertQuery);
 
-    // check if record was added
-    // this will give you the id of the record that was just added
-    if(mysqli_insert_id($db)){
-        // redirect
-        header('Location: city.php?id=' . $reviewId);
-    }else{
-        // TODO: let the user know there was an error
+    if($result) {
+        // redirect to movie details page
+        header('Location: movie-details.php?MovieId=' . $movieId);
+        exit;
+    } else {
+        echo "Error adding review: " . mysqli_error($db);
     }
 }
 
-// close database connection (put in footer to avoid doing multiple times)
 mysqli_close($db);
+require_once "includes/header.php";
 ?>
+<a href="movie-details.php?MovieId=<?= $movieId ?>" class="btn btn-outline-light">
+    <i class="fas fa-arrow-left"></i> Back
+</a>
 
-<form method="post">
-    <p>
-        <label for="title">Review Title: </label>
-        <input type="text" id="title" name="title">
-    </p>
-    <p>
-        <label for="review">Review: </label>
-        <input type="text" id="review" name="review">
-    </p>
-    <p>
-        <label for="movie">Movie: </label>
-        <input type="hidden" name="cityId" value="<?= $addReview['MovieId'] ?>">
-        <input type="text" id="city" value="<?= $addReview['MovieTitle'] ?>" disabled>
-    </p>
 
-    <p>
-        <label for="rating">Rating: </label>
-        <select id="rating" name="rating">
-            <option value="1">⭐️</option>
-            <option value="2">&starf;&starf;️</option>
-            <option value="3">⭐⭐⭐️</option>
-            <option value="4">⭐⭐⭐⭐️</option>
-            <option value="5">⭐⭐⭐⭐⭐️</option>
-        </select>
-    </p>
+<div class="container mt-5">
+    <h1>Add Movie Review</h1>
 
-    <p>
-        <label for="first">First Name: </label>
-        <input type="text" id="first" name="first">
-    </p>
+    <form method="post">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Review Title:</label>
+                    <input type="text" class="form-control" id="title" name="title">
+                </div>
+                <div class="mb-3">
+                    <label for="review" class="form-label">Review:</label>
+                    <textarea type="text" class="form-control" id="review" name="review"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="movie" class="form-label">Movie:</label>
+                    <input type="text" class="form-control" id="movie" value="<?= $movie['MovieTitle'] ?>" disabled>
+                    <input type="hidden" name="movieId" value="<?= $movieId ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Rating:</label>
+                    <select class="form-select" id="rating" name="rating">
+                        <option value="1">⭐️<i class="fas fa-star text-warning"></i></option>
+                        <option value="2">⭐️⭐️<i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i></option>
+                        <option value="3">⭐️⭐️⭐️<i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i></option>
+                        <option value="4">⭐️⭐️⭐️⭐️ <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i></option>
+                        <option value="5">⭐️⭐️⭐️⭐️⭐️ <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="first" class="form-label">First Name:</label>
+                    <input type="text" class="form-control" id="first" name="first">
+                </div>
+                <div class="mb-3">
+                    <label for="last" class="form-label">Last Name:</label>
+                    <input type="text" class="form-control" id="last" name="last">
+                </div>
+                <button type="submit" name="add" class="btn btn-primary">Add Review</button>
+            </div>
+        </div>
+    </form>
+</div>
 
-    <p>
-        <label for="last">Last Name: </label>
-        <input type="text" id="last" name="last">
-    </p>
-    <p>
-        <button type="submit" name="add" class="btn btn-primary">Add Place</button>
-    </p>
-</form>
+<?php require_once "includes/footer.php"; ?>
 
-</body>
-</html>
