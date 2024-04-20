@@ -5,9 +5,11 @@ require_once "includes/database.php";
 $movieId = $_GET['id'] ?? '1';
 
 // Fetch movie details
-$query = "SELECT * FROM final_movie WHERE MovieId = '$movieId'";
-$result = mysqli_query($db, $query) or die('Error loading movie.');
-
+$query = "SELECT * FROM final_movie WHERE MovieId = ?";
+$stmt = mysqli_prepare($db, $query);
+mysqli_stmt_bind_param($stmt, "s", $movieId);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 $movie = mysqli_fetch_assoc($result);
 
 // if form was submitted
@@ -19,16 +21,16 @@ if(isset($_POST['add'])) {
     $firstName = $_POST['first'] ?? '';
     $lastName = $_POST['last'] ?? '';
 
-    // TODO: validate inputs
-
-    // query to add record
+    // Prepare insert statement
     $insertQuery = "INSERT INTO `final_review` 
                     (`MovieId`, `ReviewTitle`, `Review`, `Rating`, `FirstName`, `LastName`) 
                     VALUES 
-                    ('$movieId', '$reviewTitle', '$review', '$rating', '$firstName', '$lastName')";
+                    (?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($db, $insertQuery);
+    mysqli_stmt_bind_param($stmt, "isssss", $movieId, $reviewTitle, $review, $rating, $firstName, $lastName);
 
     // execute query
-    $result = mysqli_query($db, $insertQuery);
+    $result = mysqli_stmt_execute($stmt);
 
     if($result) {
         // redirect to movie details page
@@ -42,6 +44,7 @@ if(isset($_POST['add'])) {
 mysqli_close($db);
 require_once "includes/header.php";
 ?>
+
 <a href="movie-details.php?MovieId=<?= $movieId ?>" class="btn btn-outline-light">
     <i class="fas fa-arrow-left"></i> Back
 </a>
@@ -50,7 +53,7 @@ require_once "includes/header.php";
 <div class="container mt-5">
     <h1>Add Movie Review</h1>
 
-    <form method="post">
+    <form method="post" accept-charset="UTF-8">
         <div class="row">
             <div class="col-md-6 mx-auto">
                 <div class="mb-3">
@@ -69,11 +72,11 @@ require_once "includes/header.php";
                 <div class="mb-3">
                     <label for="rating" class="form-label">Rating:</label>
                     <select class="form-select" id="rating" name="rating">
-                        <option value="1">⭐️<i class="fas fa-star text-warning"></i></option>
-                        <option value="2">⭐️⭐️<i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i></option>
-                        <option value="3">⭐️⭐️⭐️<i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i></option>
-                        <option value="4">⭐️⭐️⭐️⭐️ <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i></option>
-                        <option value="5">⭐️⭐️⭐️⭐️⭐️ <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i></option>
+                        <option value="1">⭐️</option>
+                        <option value="2">⭐️⭐️</option>
+                        <option value="3">⭐️⭐️⭐</option>
+                        <option value="4">⭐️⭐️⭐️⭐️ </option>
+                        <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
                     </select>
                 </div>
                 <div class="mb-3">

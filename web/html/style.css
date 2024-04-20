@@ -1,7 +1,9 @@
 /* General Styles */
 body {
-    font-family: 'Raleway', sans-serif;
-    background-color: #707070;
+    font-family: AppleGothic;
+    /*font-family: "Academy Engraved LET";*/
+    /*font-family: "Euphemia UCAS", Serif;*/
+    background-color: #606669;
     color: white;
     margin: 0;
     display: flex;
@@ -48,10 +50,10 @@ label {
 }
 
 .btn-secondary {
-    margin: auto;
+    margin-top: 2%;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, .btn-secondary:hover {
     background-color: #5c859e;
     color: white;
     border-color: #5c859e;

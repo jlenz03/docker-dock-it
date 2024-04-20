@@ -3,7 +3,7 @@ require_once "includes/header.php";
 require_once "includes/database.php";
 
 ?>
-<body>
+
 
 <div class="row d-flex justify-content-center">
 
@@ -13,8 +13,7 @@ require_once "includes/database.php";
 </div>
 
 
-</body>
-</html>
+
 <?php
 // query to run on the database
 // use title, artist, and price as your 3 columns
