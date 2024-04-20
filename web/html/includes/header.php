@@ -17,8 +17,8 @@
 </head>
 
 <header>
-    <div class="logo  d-flex justify-content-start ">
-        <a class="navbar-brand rounded-circle d-flex justify-content-center align-items-center bg-white" href="index.php">
+    <div class="d-flex justify-content-start ">
+        <a class="navbar-brand rounded-circle d-flex justify-content-center align-items-center bg-white logo" href="index.php">
             <img src="images/reel-review-logo.png" alt="reel logo" class="img-fluid">
         </a>
         <h1>REEL REVIEWS</h1>

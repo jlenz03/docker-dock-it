@@ -80,7 +80,7 @@ a {
 
 .nav a:hover,
 a:hover {
-    color: #81AEC0;
+    color: #98cde3;
 }
 
 /* Footer Styles */
@@ -92,7 +92,7 @@ a:hover {
 
 /* Logo Styles */
 .logo {
-    max-width: 350px;
+    max-width: 125px;
     height: auto;
     padding: 1%;
 }

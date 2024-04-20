@@ -5,11 +5,11 @@ require_once "includes/database.php";
 ?>
 
 
-<div class="row d-flex justify-content-center">
+<div class="row d-flex justify-content-center mt-5 ">
 
-    <div class="col-4">
+
         <h1>Welcome to Reel Reviews</h1>
-    </div>
+
 </div>
 
 
